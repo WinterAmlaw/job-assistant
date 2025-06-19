@@ -1,3 +1,9 @@
+import ScrapeJobs from "./ScrapeJobs";
+
 export default function ToolsPage() {
-  return <div className="p-8">Tools page coming soon.</div>;
+  return (
+    <div className="p-8">
+      <ScrapeJobs />
+    </div>
+  );
 }
