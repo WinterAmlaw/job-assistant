@@ -4,6 +4,7 @@ import { saveToFile, readFromFile, autosaveToLocalStorage } from "@/lib/storage"
 import { Select, SelectTrigger, SelectValue, SelectContent, SelectItem } from "@/components/ui/select";
 import { Checkbox } from "@/components/ui/checkbox";
 import { Input } from "@/components/ui/input";
+import { AlertDialog, AlertDialogTrigger, AlertDialogContent, AlertDialogHeader, AlertDialogTitle, AlertDialogFooter, AlertDialogCancel, AlertDialogAction } from "@/components/ui/alert-dialog";
 
 export type JobStatus = "Applied" | "Interviewing" | "Rejected" | "Offer";
 
@@ -30,6 +31,8 @@ export default function JobTracker() {
   const [sortOrder, setSortOrder] = useState<string>("desc");
   const [newTaskText, setNewTaskText] = useState<{ [jobId: string]: string }>({});
   const [newTaskDue, setNewTaskDue] = useState<{ [jobId: string]: string }>({});
+  const [pendingImport, setPendingImport] = useState<any>(null);
+  const [showDialog, setShowDialog] = useState(false);
   const fileInputRef = useRef<HTMLInputElement>(null);
 
   // Load from localStorage on mount
@@ -51,8 +54,20 @@ export default function JobTracker() {
     const file = e.target.files?.[0];
     if (!file) return;
     readFromFile(file).then((data) => {
-      setJobs(data);
+      setPendingImport(data);
+      setShowDialog(true);
     });
+  }
+
+  function confirmImport() {
+    setJobs(pendingImport);
+    setPendingImport(null);
+    setShowDialog(false);
+  }
+
+  function cancelImport() {
+    setPendingImport(null);
+    setShowDialog(false);
   }
 
   // Task management helpers
@@ -174,6 +189,18 @@ export default function JobTracker() {
         ))}
         {sortedJobs.length === 0 && <div className="text-muted-foreground">No jobs found.</div>}
       </div>
+      <AlertDialog open={showDialog} onOpenChange={setShowDialog}>
+        <AlertDialogContent>
+          <AlertDialogHeader>
+            <AlertDialogTitle>Replace all jobs with imported data?</AlertDialogTitle>
+          </AlertDialogHeader>
+          <div className="mb-2 text-sm text-muted-foreground">This will overwrite your current job tracker data.</div>
+          <AlertDialogFooter>
+            <AlertDialogCancel onClick={cancelImport}>Cancel</AlertDialogCancel>
+            <AlertDialogAction onClick={confirmImport}>Import</AlertDialogAction>
+          </AlertDialogFooter>
+        </AlertDialogContent>
+      </AlertDialog>
     </div>
   );
 }
