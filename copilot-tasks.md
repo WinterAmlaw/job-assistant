@@ -2,7 +2,7 @@
 
 ## 🧱 SETUP
 
-TASK: Initialize a new Next.js 14 project using the App Router, Tailwind CSS, and ShadCN UI. Configure dark mode and install icons.
+TASK: ~~Initialize a new Next.js 14 project using the App Router, Tailwind CSS, and ShadCN UI. Configure dark mode and install icons.~~ ✅ DONE
 
 TASK: Create a navigation layout with three routes: /jobs, /resumes, and /tools. Use ShadCN's Navbar component and responsive layout.
 
@@ -78,4 +78,3 @@ Use ShadCN Cards and `date-fns` for date handling.
 ## 🔧 OPTIONAL: MAKE THIS A PWA
 
 TASK: Add service worker and manifest.json so this app can run offline. Use `next-pwa` to enable full local usage.
-
