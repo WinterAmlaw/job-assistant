@@ -1,3 +1,4 @@
+"use client";
 import { useEffect, useState } from "react";
 import { Card } from "@/components/ui/card";
 import { format, isThisWeek, parseISO } from "date-fns";
